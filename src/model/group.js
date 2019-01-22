@@ -1,4 +1,4 @@
-const User = require('./users');
+const Users = require('./users');
 
 module.exports = (sequelize, DataTypes) => {
   const Groups = sequelize.define('Groups', {
@@ -24,7 +24,7 @@ module.exports = (sequelize, DataTypes) => {
       },
     },
     metadatas: {
-      type: DataTypes.JON,
+      type: DataTypes.JSON,
       comment: 'Group metadatas',
       set(value) {
         this.setDataValue('metadatas', value);
@@ -32,7 +32,7 @@ module.exports = (sequelize, DataTypes) => {
     },
   });
 
-  Groups.belongsToMany(User, { through: 'UserGroups' });
-  Groups.hasOne(User, { as: 'GroupAdmin' });
+  Groups.belongsToMany(Users, { through: 'UserGroups' });
+  Groups.hasOne(Users, { as: 'GroupAdmin' });
   return Groups;
 };
