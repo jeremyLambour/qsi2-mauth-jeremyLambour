@@ -82,7 +82,10 @@ module.exports = (sequelize, DataTypes) => {
       });
     });
   };
-  Users.belongsToMany(Groups, { through: 'UserGroups' });
+
+  Users.associate = models => {
+    Users.belongsToMany(models.Groups, { through: 'UserGroups' });
+  };
 
   return Users;
 };

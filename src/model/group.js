@@ -1,5 +1,3 @@
-const Users = require('./users');
-
 module.exports = (sequelize, DataTypes) => {
   const Groups = sequelize.define('Groups', {
     idGroup: {
@@ -31,8 +29,10 @@ module.exports = (sequelize, DataTypes) => {
       },
     },
   });
+  Groups.associate = models => {
+    Groups.belongsToMany(models.Users, { through: 'UserGroups' });
+    Groups.belongsTo(models.Users, { as: 'GroupAdmin' });
+  };
 
-  Groups.belongsToMany(Users, { through: 'UserGroups' });
-  Groups.hasOne(Users, { as: 'GroupAdmin' });
   return Groups;
 };
