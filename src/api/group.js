@@ -1,4 +1,6 @@
 const express = require('express');
+
+const logger = require('../logger.js');
 const {
   createGroup,
   addGroupMember,
@@ -28,11 +30,11 @@ apiGroupsProtected.post('/member', (req, res) =>
         success: false,
         message: 'userId and groupId are required to add a new member',
       })
-    : addGroupMember(req.body).then(groupMember => {
+    : addGroupMember(req.body).then(() => {
         res.status(201).send({
           success: true,
-          message: `user${groupMember.userId}succesfully joined group${
-            groupMember.groupIdGroup
+          message: `user ${req.body.userId} succesfully joined group ${
+            req.body.groupId
           }`,
         });
       })
@@ -44,12 +46,12 @@ apiGroupsProtected.delete('/member', (req, res) =>
         success: false,
         message: 'userId and groupId are required to add a new member',
       })
-    : removeGroupMember(req.body).then(groupMember => {
+    : removeGroupMember(req.body).then(() => {
         res.status(201).send({
           success: true,
-          message: `user${groupMember.userId}succesfully joined group${
-            groupMember.groupIdGroup
-          }`,
+          message: `user ${
+            req.body.userId
+          } succesfully deleted from the group ${req.body.groupId}`,
         });
       })
 );
