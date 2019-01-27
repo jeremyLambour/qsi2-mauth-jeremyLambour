@@ -1,6 +1,7 @@
 const express = require('express');
 const helmet = require('helmet');
 const hpp = require('hpp');
+const enforce = require('express-sslify');
 const { apiUsers, apiUsersProtected } = require('./users');
 const { isAuthenticated, initAuth } = require('../controller/auth');
 const { apiGroupsProtected } = require('./group');
@@ -12,6 +13,7 @@ initAuth();
 api.use(express.json({ limit: '1mb' }));
 api.use(helmet());
 api.use(hpp());
+api.use(enforce.HTTPS());
 // create an express router that will be mount at the root of the api
 const apiRoutes = express.Router();
 apiRoutes
