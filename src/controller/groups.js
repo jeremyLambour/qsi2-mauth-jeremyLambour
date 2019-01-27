@@ -1,10 +1,11 @@
 const { Groups } = require('../model');
 
-const createGroup = ({ title, description, GroupAdmin }) =>
+const createGroup = ({ title, description, GroupAdmin, metadatas }) =>
   Groups.create({
     title,
     description,
     GroupAdminId: GroupAdmin,
+    metadatas,
   });
 const listGroups = () => Groups.findAll();
 const addGroupMember = ({ groupId, userId }) =>
