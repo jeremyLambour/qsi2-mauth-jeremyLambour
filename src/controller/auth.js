@@ -6,7 +6,6 @@ const { getUser } = require('./users');
 // Create our strategy
 const jwtStrategy = opts =>
   new Strategy(opts, (jwtPayload, done) => {
-    console.log('jwt:', jwtPayload);
     getUser(jwtPayload)
       .then(user => {
         if (user) {
