@@ -5,6 +5,7 @@ const enforce = require('express-sslify');
 const { apiUsers, apiUsersProtected } = require('./users');
 const { isAuthenticated, initAuth } = require('../controller/auth');
 const { apiGroupsProtected } = require('./group');
+const { apiPostProtected } = require('./posts');
 
 // create an express Application for our api
 const api = express();
@@ -24,6 +25,7 @@ apiRoutes
   .use(isAuthenticated)
   .use('/users', apiUsersProtected)
   .use('/groups', apiGroupsProtected)
+  .use('/posts', apiPostProtected)
   .use((err, req, res, next) => {
     res.status(403).send({
       success: false,

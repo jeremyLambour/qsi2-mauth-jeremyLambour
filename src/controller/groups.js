@@ -1,4 +1,5 @@
 const { Groups } = require('../model');
+const logger = require('../logger');
 
 const createGroup = ({ title, description, GroupAdmin, metadatas }) =>
   Groups.create({
@@ -6,7 +7,11 @@ const createGroup = ({ title, description, GroupAdmin, metadatas }) =>
     description,
     GroupAdminId: GroupAdmin,
     metadatas,
+  }).then(group => {
+    group.addUser(GroupAdmin);
+    return group;
   });
+
 const listGroups = () => Groups.findAll();
 
 const addGroupMember = ({ groupId, userId }) =>
@@ -24,9 +29,15 @@ const removeGroupMember = ({ groupId, userId }) =>
       ? group.removeUser(userId)
       : Promise.reject(new Error('Group not found'))
   );
+
+const isGroupMember = ({ groupId, userId }) =>
+  Groups.findOne({
+    where: { idGroup: groupId },
+  }).then(group => group.hasUser(userId));
 module.exports = {
   createGroup,
   addGroupMember,
   listGroups,
   removeGroupMember,
+  isGroupMember,
 };
