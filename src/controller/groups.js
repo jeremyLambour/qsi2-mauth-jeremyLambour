@@ -8,18 +8,22 @@ const createGroup = ({ title, description, GroupAdmin, metadatas }) =>
     metadatas,
   });
 const listGroups = () => Groups.findAll();
+
 const addGroupMember = ({ groupId, userId }) =>
   Groups.findOne({
     where: { idGroup: groupId },
-  }).then(group => {
-    group.addUser(userId);
-  });
+  }).then(group =>
+    group ? group.addUser(userId) : Promise.reject(new Error('Group not found'))
+  );
+
 const removeGroupMember = ({ groupId, userId }) =>
   Groups.findOne({
     where: { idGroup: groupId },
-  }).then(group => {
-    group.removeUser(userId);
-  });
+  }).then(group =>
+    group
+      ? group.removeUser(userId)
+      : Promise.reject(new Error('Group not found'))
+  );
 module.exports = {
   createGroup,
   addGroupMember,

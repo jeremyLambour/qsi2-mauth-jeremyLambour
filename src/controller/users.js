@@ -66,7 +66,9 @@ const updateUser = ({ id, email, firstName, lastName, password }) =>
       },
     }
   ).then(numberModifiedRows =>
-    numberModifiedRows > 0 ? 'user modified' : 'user not modified'
+    numberModifiedRows > 0
+      ? 'user modified'
+      : Promise.reject(new Error('USER NOT MODIFIED'))
   );
 
 const deleteUser = ({ id }) =>
@@ -80,7 +82,9 @@ const deleteUser = ({ id }) =>
       },
     }
   ).then(numberModifiedRows =>
-    numberModifiedRows > 0 ? 'user deleted' : 'user not deleted'
+    numberModifiedRows > 0
+      ? 'user deleted'
+      : Promise.reject(new Error('USER NOT DELETED'))
   );
 module.exports = {
   createUser,

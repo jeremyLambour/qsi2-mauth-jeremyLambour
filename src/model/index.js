@@ -5,7 +5,24 @@ const Sequelize = require('sequelize');
 const db = {};
 const basename = path.basename(module.filename);
 
-const sequelize = new Sequelize(process.env.DATABASE_URL);
+// const sequelize = new Sequelize(process.env.DATABASE_URL);
+const sequelize = new Sequelize(
+  process.env.DATABASE_NAME,
+  process.env.DATABASE_USERNAME,
+  process.env.DATABASE_PASSWORD,
+  {
+    host: process.env.DATABASE_HOST,
+    dialect: 'postgres',
+    operatorsAliases: false,
+
+    pool: {
+      max: 5,
+      min: 0,
+      acquire: 30000,
+      idle: 10000,
+    },
+  }
+);
 fs.readdirSync(__dirname)
   .filter(
     file =>

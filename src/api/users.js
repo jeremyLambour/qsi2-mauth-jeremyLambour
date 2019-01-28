@@ -75,7 +75,7 @@ apiUsers.post('/login', (req, res) =>
       })
     : loginUser(req.body)
         .then(user => {
-          const token = jwt.encode({ id: user.id }, process.env.JWT_SECRET);
+          const token = jwt.encode({ id: user[0].id }, process.env.JWT_SECRET);
           return res.status(200).send({
             success: true,
             token: `JWT ${token}`,
@@ -96,35 +96,57 @@ const apiUsersProtected = express.Router();
 apiUsersProtected.get('/', (req, res) => {
   const id = req.param('id');
   logger.info(`💥 req headers : ${req.headers.authorization}`);
-  getUser({ id }).then(user => {
-    res.status(200).send({
-      success: true,
-      profile: user,
-      message: 'user logged in',
+  getUser({ id })
+    .then(user => {
+      res.status(200).send({
+        success: true,
+        profile: user,
+        message: 'user logged in',
+      });
+    })
+    .catch(err => {
+      logger.error(`💥 Failed to get user : ${err.stack}`);
+      return res.status(500).send({
+        success: false,
+        message: `${err.name} : ${err.message}`,
+      });
     });
-  });
 });
 
 apiUsersProtected.put('/', (req, res) => {
   logger.info(`💥 req param : `, JSON.stringify(req.body));
   logger.info(`💥 req headers : ${req.headers.authorization}`);
-  updateUser(req.body).then(mes => {
-    res.status(200).send({
-      success: true,
-      message: mes,
+  updateUser(req.body)
+    .then(mes => {
+      res.status(200).send({
+        success: true,
+        message: mes,
+      });
+    })
+    .catch(err => {
+      logger.error(`💥 Failed to update user : ${err.stack}`);
+      return res.status(500).send({
+        success: false,
+        message: `${err.name} : ${err.message}`,
+      });
     });
-  });
 });
 
 apiUsersProtected.delete('/', (req, res) => {
-  logger.info(`💥 req param : `, JSON.stringify(req.body));
-  logger.info(`💥 req headers : ${req.headers.authorization}`);
-  deleteUser(req.body).then(mes => {
-    res.status(200).send({
-      success: true,
-      message: mes,
+  deleteUser(req.body)
+    .then(mes => {
+      res.status(200).send({
+        success: true,
+        message: mes,
+      });
+    })
+    .catch(err => {
+      logger.error(`💥 Failed to delete user : ${err.stack}`);
+      return res.status(500).send({
+        success: false,
+        message: `${err.name} : ${err.message}`,
+      });
     });
-  });
 });
 
 module.exports = { apiUsers, apiUsersProtected };
