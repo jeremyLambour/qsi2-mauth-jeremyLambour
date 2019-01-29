@@ -95,7 +95,6 @@ apiUsers.post('/login', (req, res) =>
 const apiUsersProtected = express.Router();
 apiUsersProtected.get('/', (req, res) => {
   const id = req.param('id');
-  logger.info(`💥 req headers : ${req.headers.authorization}`);
   getUser({ id })
     .then(user => {
       res.status(200).send({
@@ -114,8 +113,6 @@ apiUsersProtected.get('/', (req, res) => {
 });
 
 apiUsersProtected.put('/', (req, res) => {
-  logger.info(`💥 req param : `, JSON.stringify(req.body));
-  logger.info(`💥 req headers : ${req.headers.authorization}`);
   updateUser(req.body)
     .then(mes => {
       res.status(200).send({
