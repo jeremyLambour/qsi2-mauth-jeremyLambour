@@ -2,11 +2,16 @@ const express = require('express');
 const helmet = require('helmet');
 const hpp = require('hpp');
 const enforce = require('express-sslify');
+const cors = require('cors');
 const { apiUsers, apiUsersProtected } = require('./users');
 const { isAuthenticated, initAuth } = require('../controller/auth');
 const { apiGroupsProtected } = require('./group');
 const { apiPostProtected } = require('./posts');
 
+const corsOptions = {
+  origin: process.env.ORIGIN || 'http://localhost:1234',
+  optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
+};
 // create an express Application for our api
 const api = express();
 initAuth();
@@ -14,7 +19,8 @@ initAuth();
 api.use(express.json({ limit: '1mb' }));
 api.use(helmet());
 api.use(hpp());
-api.use(enforce.HTTPS({ trustProtoHeader: true }));
+api.use(cors(corsOptions));
+// api.use(enforce.HTTPS({ trustProtoHeader: true }));
 // create an express router that will be mount at the root of the api
 const apiRoutes = express.Router();
 apiRoutes

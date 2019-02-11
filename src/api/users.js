@@ -79,7 +79,7 @@ apiUsers.post('/login', (req, res) =>
           return res.status(200).send({
             success: true,
             token: `JWT ${token}`,
-            profile: user,
+            profile: user[0],
             message: 'user logged in',
           });
         })
