@@ -20,7 +20,7 @@ api.use(express.json({ limit: '1mb' }));
 api.use(helmet());
 api.use(hpp());
 api.use(cors(corsOptions));
-// api.use(enforce.HTTPS({ trustProtoHeader: true }));
+api.use(enforce.HTTPS({ trustProtoHeader: true }));
 // create an express router that will be mount at the root of the api
 const apiRoutes = express.Router();
 apiRoutes
